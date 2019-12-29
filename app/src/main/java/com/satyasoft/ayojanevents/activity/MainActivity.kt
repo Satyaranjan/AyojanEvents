@@ -1,7 +1,8 @@
-package com.satyasoft.ayojanevents
+package com.satyasoft.ayojanevents.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.satyasoft.ayojanevents.R
 
 class MainActivity : AppCompatActivity() {
 
