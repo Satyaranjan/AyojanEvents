@@ -29,6 +29,7 @@ class WelcomeActivity : AppCompatActivity() {
     private var btnSkip: Button? = null
     private var btnNext: Button? = null
     private var prefManager: PrefManager? = null
+    private val context :Context? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // Checking for first time launch - before calling setContentView()
@@ -53,7 +54,8 @@ class WelcomeActivity : AppCompatActivity() {
             R.layout.welcome_slide1,
             R.layout.welcome_slide2,
             R.layout.welcome_slide3,
-            R.layout.welcome_slide4
+            R.layout.welcome_slide4,
+            R.drawable.ic_food
         )
         // adding bottom dots
         addBottomDots(0)
