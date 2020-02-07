@@ -6,30 +6,31 @@ import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.text.Html
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import com.satyasoft.ayojanevents.R
 import com.satyasoft.ayojanevents.activity.AyojanEventsServices
 
+
 class WelcomeActivity : AppCompatActivity() {
     private var viewPager: ViewPager? = null
-    private var myViewPagerAdapter: MyViewPagerAdapter? = null
+    private var myViewPagerAdapter: SlidingImageAdapter? = null
     private var dotsLayout: LinearLayout? = null
     private lateinit var dots: Array<TextView?>
-    private lateinit var layouts: IntArray
+   // private lateinit var layouts: IntArray
     private var btnSkip: Button? = null
     private var btnNext: Button? = null
     private var prefManager: PrefManager? = null
     private val context :Context? = null
+    private val imags = arrayOf<Int>(R.drawable.ic_food, R.drawable.ic_movie, R.drawable.ic_travel, R.drawable.ic_discount)
+   private val slideImage = arrayOf<String>("https://ayojanevents.com/wp-content/uploads/2019/05/MG_0437-768x431.jpg","https://ayojanevents.com/wp-content/uploads/2019/05/MG_0598-768x431.jpg", "https://ayojanevents.com/wp-content/uploads/2019/05/MG_0598-768x431.jpg", "https://ayojanevents.com/wp-content/uploads/2019/05/AYOJAN-2-e1558327508845-768x448.jpg", "https://ayojanevents.com/wp-content/uploads/2019/05/MG_0608-768x431.jpg")
+    private val ImagesArray = ArrayList<String>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // Checking for first time launch - before calling setContentView()
@@ -50,18 +51,19 @@ class WelcomeActivity : AppCompatActivity() {
         btnNext = findViewById<View>(R.id.btn_next) as Button
         // layouts of all welcome sliders
 // add few more layouts if you want
-        layouts = intArrayOf(
+
+        for (i in 0 until slideImage.size) ImagesArray.add(slideImage.get(i))
+
+       /* layouts = intArrayOf(
             R.layout.welcome_slide1,
             R.layout.welcome_slide2,
             R.layout.welcome_slide3,
             R.layout.welcome_slide4,
             R.drawable.ic_food
-        )
-        // adding bottom dots
-        addBottomDots(0)
+        )*/
         // making notification bar transparent
         changeStatusBarColor()
-        myViewPagerAdapter = MyViewPagerAdapter()
+        myViewPagerAdapter = SlidingImageAdapter(this,ImagesArray)
         viewPager!!.adapter = myViewPagerAdapter
         viewPager!!.addOnPageChangeListener(viewPagerPageChangeListener)
         btnSkip!!.setOnClickListener { launchHomeScreen() }
@@ -69,7 +71,7 @@ class WelcomeActivity : AppCompatActivity() {
             // checking for last page
 // if last page home screen will be launched
             val current = getItem(+1)
-            if (current < layouts.size) { // move to next screen
+            if (current < ImagesArray.size) { // move to next screen
                 viewPager!!.currentItem = current
             } else {
                 launchHomeScreen()
@@ -78,7 +80,7 @@ class WelcomeActivity : AppCompatActivity() {
     }
 
     private fun addBottomDots(currentPage: Int) {
-        dots = arrayOfNulls(layouts.size)
+        dots = arrayOfNulls(ImagesArray.size)
         val colorsActive = resources.getIntArray(R.array.array_dot_active)
         val colorsInactive = resources.getIntArray(R.array.array_dot_inactive)
         dotsLayout!!.removeAllViews()
@@ -107,7 +109,7 @@ class WelcomeActivity : AppCompatActivity() {
         override fun onPageSelected(position: Int) {
             addBottomDots(position)
             // changing the next button text 'NEXT' / 'GOT IT'
-            if (position == layouts.size - 1) { // last page. make button text to GOT IT
+            if (position == ImagesArray.size - 1) { // last page. make button text to GOT IT
                 btnNext!!.text = getString(R.string.start)
                 btnSkip!!.visibility = View.GONE
             } else { // still pages are left
@@ -131,38 +133,4 @@ class WelcomeActivity : AppCompatActivity() {
         }
     }
 
-    /**
-     * View pager adapter
-     */
-    inner class MyViewPagerAdapter : PagerAdapter() {
-        private var layoutInflater: LayoutInflater? = null
-        override fun instantiateItem(container: ViewGroup, position: Int): Any {
-            layoutInflater =
-                getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-            val view =
-                layoutInflater!!.inflate(layouts[position], container, false)
-            container.addView(view)
-            return view
-        }
-
-        override fun getCount(): Int {
-            return layouts.size
-        }
-
-        override fun isViewFromObject(
-            view: View,
-            obj: Any
-        ): Boolean {
-            return view === obj
-        }
-
-        override fun destroyItem(
-            container: ViewGroup,
-            position: Int,
-            `object`: Any
-        ) {
-            val view = `object` as View
-            container.removeView(view)
-        }
-    }
 }
