@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.text.Html
 import android.view.View
 import android.view.WindowManager
@@ -16,6 +17,8 @@ import androidx.viewpager.widget.ViewPager
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import com.satyasoft.ayojanevents.R
 import com.satyasoft.ayojanevents.activity.AyojanEventsServices
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class WelcomeActivity : AppCompatActivity() {
@@ -23,13 +26,11 @@ class WelcomeActivity : AppCompatActivity() {
     private var myViewPagerAdapter: SlidingImageAdapter? = null
     private var dotsLayout: LinearLayout? = null
     private lateinit var dots: Array<TextView?>
-   // private lateinit var layouts: IntArray
     private var btnSkip: Button? = null
     private var btnNext: Button? = null
     private var prefManager: PrefManager? = null
     private val context :Context? = null
-    private val imags = arrayOf<Int>(R.drawable.ic_food, R.drawable.ic_movie, R.drawable.ic_travel, R.drawable.ic_discount)
-   private val slideImage = arrayOf<String>("https://ayojanevents.com/wp-content/uploads/2019/05/MG_0437-768x431.jpg","https://ayojanevents.com/wp-content/uploads/2019/05/MG_0598-768x431.jpg", "https://ayojanevents.com/wp-content/uploads/2019/05/MG_0598-768x431.jpg", "https://ayojanevents.com/wp-content/uploads/2019/05/AYOJAN-2-e1558327508845-768x448.jpg", "https://ayojanevents.com/wp-content/uploads/2019/05/MG_0608-768x431.jpg")
+    private val slideImage = arrayOf<String>("https://ayojanevents.com/wp-content/uploads/2019/05/MG_0437-768x431.jpg","https://ayojanevents.com/wp-content/uploads/2019/05/MG_0598-768x431.jpg", "https://ayojanevents.com/wp-content/uploads/2019/05/MG_0598-768x431.jpg", "https://ayojanevents.com/wp-content/uploads/2019/05/AYOJAN-2-e1558327508845-768x448.jpg")
     private val ImagesArray = ArrayList<String>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,18 +50,9 @@ class WelcomeActivity : AppCompatActivity() {
         dotsLayout = findViewById<View>(R.id.layoutDots) as LinearLayout
         btnSkip = findViewById<View>(R.id.btn_skip) as Button
         btnNext = findViewById<View>(R.id.btn_next) as Button
-        // layouts of all welcome sliders
-// add few more layouts if you want
 
         for (i in 0 until slideImage.size) ImagesArray.add(slideImage.get(i))
 
-       /* layouts = intArrayOf(
-            R.layout.welcome_slide1,
-            R.layout.welcome_slide2,
-            R.layout.welcome_slide3,
-            R.layout.welcome_slide4,
-            R.drawable.ic_food
-        )*/
         // making notification bar transparent
         changeStatusBarColor()
         myViewPagerAdapter = SlidingImageAdapter(this,ImagesArray)
@@ -68,8 +60,8 @@ class WelcomeActivity : AppCompatActivity() {
         viewPager!!.addOnPageChangeListener(viewPagerPageChangeListener)
         btnSkip!!.setOnClickListener { launchHomeScreen() }
         btnNext!!.setOnClickListener {
-            // checking for last page
-// if last page home screen will be launched
+        // checking for last page
+        // if last page home screen will be launched
             val current = getItem(+1)
             if (current < ImagesArray.size) { // move to next screen
                 viewPager!!.currentItem = current
@@ -109,7 +101,7 @@ class WelcomeActivity : AppCompatActivity() {
         override fun onPageSelected(position: Int) {
             addBottomDots(position)
             // changing the next button text 'NEXT' / 'GOT IT'
-            if (position == ImagesArray.size - 1) { // last page. make button text to GOT IT
+            if (position == ImagesArray.size-1) { // last page. make button text to GOT IT
                 btnNext!!.text = getString(R.string.start)
                 btnSkip!!.visibility = View.GONE
             } else { // still pages are left
@@ -132,5 +124,4 @@ class WelcomeActivity : AppCompatActivity() {
             window.statusBarColor = Color.TRANSPARENT
         }
     }
-
 }
