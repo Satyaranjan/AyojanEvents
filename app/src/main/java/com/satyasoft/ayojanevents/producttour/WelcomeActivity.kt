@@ -1,11 +1,11 @@
 package com.satyasoft.ayojanevents.producttour
 
+import SlidingImageAdapter
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
 import android.text.Html
 import android.view.View
 import android.view.WindowManager
@@ -17,7 +17,6 @@ import androidx.viewpager.widget.ViewPager
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import com.satyasoft.ayojanevents.R
 import com.satyasoft.ayojanevents.activity.AyojanEventsServices
-import java.util.*
 import kotlin.collections.ArrayList
 
 

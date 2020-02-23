@@ -1,5 +1,3 @@
-package com.satyasoft.ayojanevents.producttour
-
 import android.content.Context
 import android.os.Parcelable
 import android.view.LayoutInflater
@@ -9,14 +7,12 @@ import android.widget.ImageView
 import androidx.viewpager.widget.PagerAdapter
 import com.satyasoft.ayojanevents.R
 import com.squareup.picasso.Picasso
-import java.util.*
-
 
 class SlidingImageAdapter(
     private val context: Context,
     private val images: ArrayList<String>) :
     PagerAdapter() {
-    private val inflater: LayoutInflater
+    private var inflater: LayoutInflater = LayoutInflater.from(context)
     override fun destroyItem(
         container: ViewGroup,
         position: Int,
@@ -34,28 +30,10 @@ class SlidingImageAdapter(
             inflater.inflate(R.layout.slidingimages_layout, view, false)!!
         val imageView = imageLayout
             .findViewById<View>(R.id.image) as ImageView
-       // imageView.setImageResource(images[position])
+        // imageView.setImageResource(images[position])
         val picasso = Picasso.get()
-       // for (i in 0 until images.size){
-            picasso.load(images[position])
-                .into(imageView)
-      //  }
-
-
-        // ImageLoader class instance
-        // ImageLoader class instance
-      //  val imgLoader = ImageLoader(context)
-
-        // whenever you want to load an image from url
-        // call DisplayImage function
-        // url - image url to load
-        // loader - loader image, will be displayed before getting image
-        // image - ImageView
-        // whenever you want to load an image from url
-// call DisplayImage function
-// url - image url to load
-// loader - loader image, will be displayed before getting image
-// image - ImageView
+        picasso.load(images[position])
+            .into(imageView)
         view.addView(imageLayout, 0)
         return imageLayout
     }
